@@ -1,12 +1,16 @@
 import json
-from game_entities import *
 import pygame
+import random
 
+
+from game_entities import *
 
 COLOURS = {
     'HTML Gainsboro' : (220, 220, 220),
     'Mango' : (244, 187, 68)
 }
+
+FOOD_WIDTH, FOOD_HEIGHT = 5, 5
 
 def draw(window, entities):
     window.fill(COLOURS['HTML Gainsboro'])
@@ -43,13 +47,21 @@ def main():
     run = True
 
     entities = {}
-    food = Food(50, 50, 50, 50, COLOURS['Mango'])
     entities['Foods'] = []
-    entities['Foods'].append(food)
+
 
     while run:
         clock.tick(settings['global']['game-fps'])
         run = handle_events()
+
+        while len(entities['Foods']) < settings['game']['max-num-food']:
+            food = Food(random.randint(0, settings['global']['game-width']), 
+            random.randint(0, settings['global']['game-height']), 
+            FOOD_WIDTH, 
+            FOOD_HEIGHT, 
+            COLOURS['Mango'])
+            entities['Foods'].append(food)
+
         draw(root, entities)
 
     pygame.quit()
